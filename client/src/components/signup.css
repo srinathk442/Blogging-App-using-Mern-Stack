@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+form {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 450px;
+}
+
+form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+form .form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+form .form-group input,
+form .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form .form-group .show-password {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+form .form-group .show-password input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+form .form-group .show-password label {
+    font-size: 14px;
+    color: #555;
+}
+
+form .form-footer {
+    text-align: center;
+}
+
+form .form-footer button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+form .form-footer button:hover {
+    background-color: #0056b3;
+}
+
+form .form-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+form .form-footer a:hover {
+    text-decoration: underline;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 15px 0;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #0056b3;
+}
