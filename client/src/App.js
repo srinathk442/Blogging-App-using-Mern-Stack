@@ -1,21 +1,21 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import SignUp from './components/signup';
-import LOGIN from './components/login';
-import Home from './components/home'; // Assume you have a Home component
+import Post from "./post";
+import Header from "./Header";
+import { Route, Routes } from 'react-router-dom';
+import Layout from './Layout';
+import IndexPage from './Pages/IndexPage';
+import LoginPage from './Pages/LoginPage';
+import RegisterPage from './Pages/RegisterPage';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LOGIN />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-      </div>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<IndexPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="Register" element={<RegisterPage />} />
+      </Route>
+    </Routes>
   );
 }
 
