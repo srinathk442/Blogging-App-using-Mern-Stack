@@ -1,0 +1,44 @@
+.create-post-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-post-form input[type="text"],
+  .create-post-form input[type="file"] {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .create-post-form input[type="file"] {
+    padding: 5px;
+  }
+  
+  .editor-container .ql-container {
+    height: 300px; /* Increase the height */
+    margin-bottom: 15px;
+  }
+  
+  .create-post-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .create-post-button:hover {
+    background-color: #0056b3;
+  }
+  
