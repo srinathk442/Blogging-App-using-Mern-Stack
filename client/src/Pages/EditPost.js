@@ -7,17 +7,23 @@ export default function EditPost() {
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
-  const [files, setFiles] = useState(null);
+  const [file, setFile] = useState(null);
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:4000/post/${id}`)
-      .then(response => response.json())
-      .then(postInfo => {
-        setTitle(postInfo.title);
-        setContent(postInfo.content);
-        setSummary(postInfo.summary);
+      .then(response => response.text())
+      .then(text => {
+        try {
+          const postInfo = JSON.parse(text);
+          setTitle(postInfo.title);
+          setContent(postInfo.content);
+          setSummary(postInfo.summary);
+        } catch (err) {
+          console.error('Failed to parse JSON:', text);
+          setError('Failed to fetch post data');
+        }
       })
       .catch(err => setError(err.message));
   }, [id]);
@@ -29,22 +35,28 @@ export default function EditPost() {
     data.set('summary', summary);
     data.set('content', content);
     data.set('id', id);
-    if (files && files[0]) {
-      data.set('file', files[0]);
+    if (file) {
+      data.set('file', file);
     }
 
     try {
-      const response = await fetch('http://localhost:4000/post', {
+      const response = await fetch(`http://localhost:4000/post/${id}`, {
         method: 'PUT',
         body: data,
         credentials: 'include',
       });
 
-      if (response.ok) {
-        setRedirect(true);
-      } else {
-        const errorResponse = await response.json();
-        setError(errorResponse.message || 'Failed to update the post');
+      const responseText = await response.text();
+      try {
+        const jsonResponse = JSON.parse(responseText);
+        if (response.ok) {
+          setRedirect(true);
+        } else {
+          setError(jsonResponse.message || 'Failed to update the post');
+        }
+      } catch (err) {
+        console.error('Failed to parse JSON:', responseText);
+        setError('Unexpected server response');
       }
     } catch (err) {
       setError(err.message);
@@ -72,7 +84,7 @@ export default function EditPost() {
       />
       <input
         type="file"
-        onChange={ev => setFiles(ev.target.files)}
+        onChange={ev => setFile(ev.target.files[0])}
       />
       <Editor onChange={setContent} value={content} />
       <button style={{ marginTop: '5px' }}>Update post</button>
