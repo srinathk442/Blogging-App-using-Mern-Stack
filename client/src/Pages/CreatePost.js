@@ -1,7 +1,7 @@
 import 'react-quill/dist/quill.snow.css';
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import Editor from "./Edit";
+import Editor from "./Editor";
 import './CreatePost.css'; // Import the CSS file
 
 export default function CreatePost() {

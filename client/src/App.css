@@ -153,3 +153,59 @@ div.post-page a.edit-btn{
 a svg{
   height:20px;
 }
+
+div.post-page div.image{
+  max-height:300px;
+  display: flex;
+  overflow:hidden;
+}
+div.post-page div.image img{
+  object-fit: cover;
+  object-position: center center;
+  width: 100%;
+}
+
+div.post-page a{
+  color:#333;
+  text-decoration: underline;
+}
+div.post-page h1{
+  text-align: center;
+  margin: 10px 0 5px;
+}
+div.post-page time{
+  text-align: center;
+  display: block;
+  font-size:1rem;
+  color:#aaa;
+  margin: 10px 0;
+}
+div.post-page div.author{
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: .7rem;
+  font-weight: bold;
+}
+
+div.post-page  div.content p{
+  line-height: 1.6rem ;
+}
+
+div.edit-row{
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+div.post-page a.edit-btn{
+  background-color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  padding:15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+a svg{
+  height:20px;
+}

@@ -126,7 +126,7 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   if (req.file) {
     const { originalname, path: filePath } = req.file;
     const ext = path.extname(originalname);
-    newPath = filePath + ext;
+    const  newPath = filePath + ext;
     fs.renameSync(filePath, newPath);
   }
 
