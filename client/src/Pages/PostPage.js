@@ -22,6 +22,11 @@ export default function PostPage() {
 
   async function deletePost(event) {
     event.preventDefault();
+    const confirmed = window.confirm('Are you sure you want to delete this post?');
+    if (!confirmed) {
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:4000/post/${id}`, {
         method: 'DELETE',
@@ -58,7 +63,8 @@ export default function PostPage() {
             Edit this post
           </Link>
         </div>
-      )}<br></br>
+      )}
+      <br></br>
       <div className="image">
         <img src={`http://localhost:4000/${postInfo.cover}`} alt=""/>
       </div>
