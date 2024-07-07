@@ -168,6 +168,34 @@ app.put('/post/:id', uploadMiddleware.single('file'), async (req, res) => {
   });
 });
 
+app.delete('/post/:id', async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json({ error: 'Token not provided' });
+  }
+
+  jwt.verify(token, secret, {}, async (err, info) => {
+    if (err) {
+      return res.status(401).json({ error: 'Token is invalid' });
+    }
+
+    try {
+      const postDoc = await Post.findById(req.params.id);
+      if (!postDoc) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+      if (String(postDoc.author) !== String(info.id)) {
+        return res.status(400).json({ error: 'You are not the author' });
+      }
+      await postDoc.deleteOne(); // Use deleteOne instead of remove
+      res.json({ message: 'Post deleted successfully' });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ error: 'Failed to delete post' });
+    }
+  });
+});
+
 app.get('/post', async (req, res) => {
   try {
     const posts = await Post.find()
