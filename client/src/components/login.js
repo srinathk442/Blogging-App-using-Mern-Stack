@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../login.css'; // Import the CSS file
 
 const LOGIN = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [captcha, setCaptcha] = useState('');
+  const [captchaId, setCaptchaId] = useState('');
+  const [captchaValue, setCaptchaValue] = useState('');
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
+
+  const fetchCaptcha = async () => {
+    try {
+      const response = await axios.get('http://localhost:3400/generate-captcha');
+      setCaptcha(response.data.captcha);
+      setCaptchaId(response.data.captchaId);
+    } catch (err) {
+      console.error('Error fetching CAPTCHA:', err);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await axios.post("http://localhost:3400/login", { username, password });
+      const result = await axios.post("http://localhost:3400/login", { username, password, captchaId, captchaValue });
       if (result.data.status === "success") {
         navigate('/landing');
       }
@@ -69,8 +87,18 @@ const LOGIN = () => {
               />
               <label htmlFor="showPassword">Show password</label>
             </div>
+            <div className="form-group captcha-container">
+              <span>{captcha}</span>
+              <input
+                type="text"
+                placeholder="Enter CAPTCHA"
+                value={captchaValue}
+                onChange={e => setCaptchaValue(e.target.value)}
+                required
+              />
+            </div>
             <button type="submit">Sign In</button>
-            <div className="signup-link"><br></br>
+            <div className="signup-link"><br />
               <a href="/signup">Don't have an account? Sign Up</a>
             </div>
           </form>

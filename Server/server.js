@@ -40,6 +40,24 @@ connectMongoDB();
 const salt = bcrypt.genSaltSync(10);
 const secret = process.env.SECRET;
 
+let captchaStore = {}; // Temporary storage for CAPTCHAs
+
+function generateCaptcha() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let captcha = '';
+  for (let i = 0; i < 6; i++) {
+    captcha += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return captcha;
+}
+
+app.get('/generate-captcha', (req, res) => {
+  const captcha = generateCaptcha();
+  const captchaId = Date.now().toString();
+  captchaStore[captchaId] = captcha;
+  res.json({ captcha, captchaId });
+});
+
 app.post('/register', async (req, res) => {
   const { email, username, password } = req.body;
   try {
@@ -56,7 +74,13 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, captchaId, captchaValue } = req.body;
+  const storedCaptcha = captchaStore[captchaId];
+
+  if (!storedCaptcha || storedCaptcha !== captchaValue) {
+    return res.status(400).json({ message: 'Invalid CAPTCHA' });
+  }
+
   const userDoc = await User.findOne({ username });
   if (userDoc && bcrypt.compareSync(password, userDoc.password)) {
     jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
@@ -126,7 +150,7 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   if (req.file) {
     const { originalname, path: filePath } = req.file;
     const ext = path.extname(originalname);
-    const  newPath = filePath + ext;
+    newPath = filePath + ext;
     fs.renameSync(filePath, newPath);
   }
 

@@ -209,3 +209,19 @@ div.post-page a.edit-btn{
 a svg{
   height:20px;
 }
+.captcha-text {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Adjust number of columns as needed */
+  gap: 5px; /* Adjust gap between grid items */
+  justify-content: center; /* Center align items within grid */
+  text-align: center; /* Center align text within grid items */
+}
+
+.captcha-text-item {
+  padding: 10px;
+  background-color: #e0e0e0; /* Example background color */
+  border-radius: 5px; /* Rounded corners for the box */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px; /* Adjust font size */
+  letter-spacing: 2px; /* Adjust letter spacing for visibility */
+}
