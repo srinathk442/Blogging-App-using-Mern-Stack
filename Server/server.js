@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -9,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 const User = require('./models/User');
 const Post = require('./models/Post');
@@ -16,10 +15,33 @@ const Post = require('./models/Post');
 const app = express();
 
 // Middleware
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ 
+  credentials: true, 
+  origin: [
+    '*',
+    'https://mernblog-one.vercel.app',
+    'https://mernblog1.vercel.app'
+  ] 
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Add this middleware to handle credentials and additional headers
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
+
+app.options('*', cors());
+
+app.get("/", async (req, res) => {
+  return res.status(200).json({ message: "Blog app server is up and running!" });
+});
 
 const uploadMiddleware = multer({ dest: 'uploads/' });
 
@@ -27,7 +49,10 @@ mongoose.set('strictQuery', true);
 
 async function connectMongoDB() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error('Error connecting to MongoDB:', err);
@@ -64,7 +89,7 @@ app.post('/login', async (req, res) => {
         console.error(err);
         return res.status(500).json({ error: 'Failed to generate token' });
       }
-      res.cookie('token', token).json({
+      res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' }).json({
         id: userDoc._id,
         username,
       });
@@ -74,22 +99,9 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/profile', (req, res) => {
-  const { token } = req.cookies;
-  if (!token) {
-    return res.status(401).json({ error: 'Token not provided' });
-  }
-
-  jwt.verify(token, secret, {}, (err, info) => {
-    if (err) {
-      return res.status(401).json({ error: 'Token is invalid' });
-    }
-    res.json(info);
-  });
-});
 
 app.post('/logout', (req, res) => {
-  res.cookie('token', '').json({ message: 'ok' });
+  res.cookie('token', '', { httpOnly: true, secure: true, sameSite: 'None' }).json({ message: 'ok' });
 });
 
 app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
@@ -232,7 +244,12 @@ app.get('/search', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 8000;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
