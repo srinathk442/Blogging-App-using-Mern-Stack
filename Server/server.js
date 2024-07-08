@@ -219,6 +219,19 @@ app.get('/post/:id', async (req, res) => {
   }
 });
 
+app.get('/search', async (req, res) => {
+  const { title } = req.query;
+  try {
+    const posts = await Post.find({ title: { $regex: title, $options: 'i' } })
+      .populate('author', ['username'])
+      .sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to search posts' });
+  }
+});
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

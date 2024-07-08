@@ -29,11 +29,11 @@ export default function Header() {
     <header>
       <Link to="/" className="logo">MyBlog</Link>
       <nav>
+        <Link to="/search">Search</Link> {/* Add the search link */}
         {username && (
           <>
             <Link to="/create">Create new post</Link>
             <Link to="/logout" onClick={logout}>Logout</Link>
-
           </>
         )}
         {!username && (
