@@ -8,6 +8,9 @@ export default function IndexPage() {
     const fetchPosts = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const posts = await response.json();
         setPosts(posts);
       } catch (error) {

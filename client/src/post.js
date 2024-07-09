@@ -1,7 +1,7 @@
 import { formatISO9075 } from "date-fns";
 import { Link } from "react-router-dom";
 
-export default function Post({_id, title, description, cover, content, createdAt, author}) {
+export default function Post({ _id, title, description, cover, content, createdAt, author }) {
 
   const wordCount = (text) => {
     return text.split(/\s+/).filter(word => word.length > 0).length;
@@ -11,12 +11,7 @@ export default function Post({_id, title, description, cover, content, createdAt
     const wordsPerMinute = 200;
     const count = wordCount(text);
     const time = Math.ceil(count / wordsPerMinute);
-    if (time===1){
-        return `Reading time: ${time} minute`
-    }
-    else{
-      return `Reading time: ${time} minutes`
-    }
+    return time === 1 ? `Reading time: ${time} minute` : `Reading time: ${time} minutes`;
   };
 
   return (
@@ -30,12 +25,16 @@ export default function Post({_id, title, description, cover, content, createdAt
         <Link to={`/post/${_id}`}>
           <h2>{title}</h2>
         </Link>
-        <p className="info">
-          <a className="author">{author.username}</a>&nbsp;
+        <div className="info">
+          <span className="author">{author.username}</span>&nbsp;
           <time>{formatISO9075(new Date(createdAt))}</time>
-          <b><p className="word-count">Word Count: {wordCount(content)}</p></b>
-          <b><p className="reading-time">{calculateReadingTime(content)}</p></b>
-        </p>
+          <div className="word-count">
+            <b>Word Count:</b> {wordCount(content)}
+          </div>
+          <div className="reading-time">
+            <b>{calculateReadingTime(content)}</b>
+          </div>
+        </div>
         <p className="summary">{description}</p>
       </div>
     </div>

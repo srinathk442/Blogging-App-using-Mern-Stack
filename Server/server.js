@@ -15,20 +15,15 @@ const Post = require('./models/Post');
 const app = express();
 
 // Middleware
-app.use(cors({ 
-  credentials: true, 
+app.use(cors({
+  credentials: true,
   origin: [
-    '*',
+    'http://localhost:3000',
     'https://mernblog-one.vercel.app',
     'https://mernblog1.vercel.app'
-  ] 
+  ]
 }));
 
-app.use(express.json());
-app.use(cookieParser());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Add this middleware to handle credentials and additional headers
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -36,6 +31,14 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   next();
 });
+
+app.options('*', cors());
+
+
+app.use(express.json());
+app.use(cookieParser());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.options('*', cors());
 
@@ -49,10 +52,7 @@ mongoose.set('strictQuery', true);
 
 async function connectMongoDB() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error('Error connecting to MongoDB:', err);
@@ -98,7 +98,6 @@ app.post('/login', async (req, res) => {
     res.status(400).json({ error: 'Wrong credentials' });
   }
 });
-
 
 app.post('/logout', (req, res) => {
   res.cookie('token', '', { httpOnly: true, secure: true, sameSite: 'None' }).json({ message: 'ok' });
