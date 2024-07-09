@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../login.css'; // Import the CSS file
+import '../login.css'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LOGIN = () => {
   const navigate = useNavigate();
@@ -70,22 +72,21 @@ const LOGIN = () => {
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                name="password"
-                value={password}
-                onChange={handlePassword}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="checkbox"
-                id="showPassword"
-                onChange={() => setShowPassword(!showPassword)}
-              />
-              <label htmlFor="showPassword">Show password</label>
+              <div className="password-container">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={password}
+                  onChange={handlePassword}
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                />
+              </div>
             </div>
             <div className="form-group captcha-container">
               <span>{captcha}</span>
@@ -98,7 +99,7 @@ const LOGIN = () => {
               />
             </div>
             <button type="submit">Sign In</button>
-            <div className="signup-link"><br />
+            <div className="signup-link">
               <a href="/signup">Don't have an account? Sign Up</a>
             </div>
           </form>

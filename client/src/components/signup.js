@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './signup.css'; // Assuming signup.css is in the same directory
+import '../App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -22,14 +24,13 @@ const SignUp = () => {
         password,
       });
       console.log(result);
-      navigate('/'); // Navigate to home page after successful signup
+      navigate('/'); 
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    
     <div className="signup-container">
       <div className="signup-form">
         <h1>Sign up</h1>
@@ -72,23 +73,22 @@ const SignUp = () => {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              name="password"
-              required
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="checkbox"
-              id="showPassword"
-              onChange={() => setShowPassword(!showPassword)}
-            />
-            <label htmlFor="showPassword">Show password</label><br></br>
+            <div className="password-container">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                required
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            </div>
           </div>
           <button type="submit">Sign Up</button>
         </form>

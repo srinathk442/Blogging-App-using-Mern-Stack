@@ -27,13 +27,18 @@ export default function Header() {
 
   return (
     <header>
-      <Link to="/" className="logo">MyBlog</Link>
+      <Link to="/" className="logo">Lifestyle Blender</Link>
       <nav>
+        <Link to="/">Home</Link> {/* Ensure there is a direct link to Home */}
+        <Link to="/search">Search</Link>
+        <Link to="#financial">Financial Blogs</Link>
+        <Link to="#sports">Sports Blogs</Link>
+        <Link to="#business">Business Blogs</Link>
+        <Link to="#education">Education Blogs</Link>
         {username && (
           <>
             <Link to="/create">Create new post</Link>
-            <Link to="/logout" onClick={logout}>Logout</Link>
-
+            <Link to="/" onClick={logout}>Logout</Link>
           </>
         )}
         {!username && (

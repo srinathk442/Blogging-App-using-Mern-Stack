@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../App.css'; 
 
 export default function RegisterPage() {
@@ -38,19 +40,20 @@ export default function RegisterPage() {
         onChange={ev => setUsername(ev.target.value)}
         autoComplete="off"
       />
-      <input
-        type={showPassword ? "text" : "password"}
-        placeholder="Password"
-        value={password}
-        onChange={ev => setPassword(ev.target.value)}
-        autoComplete="new-password"
-      />
-      <div className="checkbox-container">
-      <label><center>Show Password</center><input
-          type="checkbox"
-          checked={showPassword}
-          onChange={() => setShowPassword(!showPassword)}
-        /></label></div>
+      <div className="password-container">
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={ev => setPassword(ev.target.value)}
+          autoComplete="new-password"
+        />
+        <FontAwesomeIcon
+          icon={showPassword ? faEyeSlash : faEye}
+          className="toggle-password"
+          onClick={() => setShowPassword(!showPassword)}
+        />
+      </div>
       <button>Register</button>
     </form>
   );

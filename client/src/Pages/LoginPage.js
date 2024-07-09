@@ -1,14 +1,16 @@
 import { useContext, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
-import '../App.css'; // Import the main CSS file
+import '../App.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash, faRefresh } from "@fortawesome/free-solid-svg-icons";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [captcha, setCaptcha] = useState('');
-  const [captchaId, setCaptchaId] = useState('');
-  const [captchaValue, setCaptchaValue] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [captcha, setCaptcha] = useState("");
+  const [captchaId, setCaptchaId] = useState("");
+  const [captchaValue, setCaptchaValue] = useState("");
   const [redirect, setRedirect] = useState(false);
   const { setUserInfo } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
@@ -18,32 +20,40 @@ export default function LoginPage() {
   }, []);
 
   async function fetchCaptcha() {
-    const response = await fetch('http://localhost:4000/generate-captcha');
-    const data = await response.json();
-    setCaptcha(data.captcha);
-    setCaptchaId(data.captchaId);
+    try {
+      const response = await fetch("http://localhost:4000/generate-captcha");
+      const data = await response.json();
+      setCaptcha(data.captcha);
+      setCaptchaId(data.captchaId);
+    } catch (error) {
+      console.error("Error fetching CAPTCHA:", error);
+    }
   }
 
   async function login(ev) {
     ev.preventDefault();
-    const response = await fetch('http://localhost:4000/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password, captchaId, captchaValue }),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    });
-    if (response.ok) {
-      response.json().then(userInfo => {
+    try {
+      const response = await fetch("http://localhost:4000/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password, captchaId, captchaValue }),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      if (response.ok) {
+        const userInfo = await response.json();
         setUserInfo(userInfo);
         setRedirect(true);
-      });
-    } else {
-      alert('Wrong credentials or CAPTCHA');
+      } else {
+        alert("Wrong credentials or CAPTCHA");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Failed to login. Please try again later.");
     }
   }
 
   if (redirect) {
-    return <Navigate to={'/'} />
+    return <Navigate to={'/'} />;
   }
 
   return (
@@ -53,35 +63,49 @@ export default function LoginPage() {
         type="text"
         placeholder="Username"
         value={username}
-        onChange={ev => setUsername(ev.target.value)}
+        onChange={(ev) => setUsername(ev.target.value)}
         autoComplete="off"
       />
-      <input
-        type={showPassword ? "text" : "password"}
-        placeholder="Password"
-        value={password}
-        onChange={ev => setPassword(ev.target.value)}
-        autoComplete="new-password"
-      />
-      <br />
-      <label>
-        <center>Show Password</center>
-        <input
-          type="checkbox"
-          checked={showPassword}
-          onChange={() => setShowPassword(!showPassword)}
-        />
-      </label>
+      <div className="password-container">
+        <label htmlFor="password">Password</label>
+        <div className="password-input">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            placeholder="Password"
+            value={password}
+            onChange={(ev) => setPassword(ev.target.value)}
+            autoComplete="new-password"
+          />
+          <FontAwesomeIcon
+            icon={showPassword ? faEyeSlash : faEye}
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          />
+        </div>
+      </div>
       <div className="captcha-container">
-        <span>{captcha}</span>
+        <label htmlFor="captcha">CAPTCHA:</label>
+        <div className="captcha-box">
+          <span className="captcha-text">{captcha}</span>
+          <button
+            type="button"
+            className="refresh-captcha"
+            onClick={fetchCaptcha}
+            id="button-addon2"
+          >
+            <FontAwesomeIcon icon={faRefresh} aria-hidden="true" />
+          </button>
+        </div>
         <input
           type="text"
+          id="captcha"
           placeholder="Enter CAPTCHA"
           value={captchaValue}
-          onChange={ev => setCaptchaValue(ev.target.value)}
+          onChange={(ev) => setCaptchaValue(ev.target.value)}
         />
       </div>
-      <button>Login</button>
+      <button type="submit">Login</button>
     </form>
   );
 }

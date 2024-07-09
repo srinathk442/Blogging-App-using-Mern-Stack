@@ -1,13 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Home.css'; // Include the CSS file for styling
 
 const Home = () => {
   return (
-    <div>
-      <h1>Welcome to our Website!</h1>
-      <p>Explore our services and offerings.</p>
-      <Link to="/signup">Sign Up</Link><br></br>
-      <Link to="/login">Login</Link>
+    <div className="home-container">
+      <header className="home-header">
+        <h1>Welcome to Lifestyle Blender!</h1>
+        <nav>
+          <Link to="/signup" className="nav-link">Register</Link>
+          <Link to="/login" className="nav-link">Login</Link>
+        </nav>
+      </header>
+      <main>
+        <section className="home-intro">
+          <h2>Explore our Blog</h2>
+          <p>Discover amazing content created by our community. Share your own stories and connect with others.</p>
+        </section>
+      </main>
     </div>
   );
 };
