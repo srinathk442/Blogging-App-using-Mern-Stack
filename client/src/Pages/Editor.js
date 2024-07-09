@@ -1,6 +1,10 @@
-import ReactQuill from "react-quill";
+import React, { useRef, useEffect } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-export default function Editor({value,onChange}) {
+export default function Editor({ value, onChange }) {
+  const quillRef = useRef(null);
+
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -15,13 +19,23 @@ export default function Editor({value,onChange}) {
       ['clean'],
     ],
   };
+
+  useEffect(() => {
+    if (quillRef.current) {
+      // You can use the editor instance here if needed
+      quillRef.current.getEditor();
+    }
+  }, []);
+
   return (
     <div className="content">
-    <ReactQuill
-      value={value}
-      theme={'snow'}
-      onChange={onChange}
-      modules={modules} />
+      <ReactQuill
+        ref={quillRef}
+        value={value}
+        theme={'snow'}
+        onChange={onChange}
+        modules={modules}
+      />
     </div>
   );
 }
