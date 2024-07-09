@@ -7,7 +7,10 @@ export default function IndexPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:4000/post');
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const posts = await response.json();
         setPosts(posts);
       } catch (error) {

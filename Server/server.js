@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -9,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 const User = require('./models/User');
 const Post = require('./models/Post');
@@ -16,10 +15,34 @@ const Post = require('./models/Post');
 const app = express();
 
 // Middleware
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+
+app.use(cors({
+  credentials: true,
+  origin: [
+    'http://localhost:3000',
+    'https://mernblog-one.vercel.app',
+    'https://mernblog1.vercel.app'
+  ]
+}));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
+
+app.options('*', cors());
+
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get("/", async (req, res) => {
+  return res.status(200).json({ message: "Blog app server is up and running!" });
+});
 
 const uploadMiddleware = multer({ dest: 'uploads/' });
 
@@ -68,12 +91,17 @@ app.post('/register', async (req, res) => {
     });
     res.json(userDoc);
   } catch (e) {
+<<<<<<< HEAD
     console.error(e);
+=======
+    console.error('Error during registration:', e);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     res.status(400).json({ error: e.message });
   }
 });
 
 app.post('/login', async (req, res) => {
+<<<<<<< HEAD
   const { username, password, captchaId, captchaValue } = req.body;
   const storedCaptcha = captchaStore[captchaId];
 
@@ -107,17 +135,45 @@ app.get('/profile', (req, res) => {
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) {
       return res.status(401).json({ error: 'Token is invalid' });
+=======
+  const { username, password } = req.body;
+  try {
+    const userDoc = await User.findOne({ username });
+    if (userDoc && bcrypt.compareSync(password, userDoc.password)) {
+      jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+        if (err) {
+          console.error('JWT signing error:', err);
+          return res.status(500).json({ error: 'Failed to generate token' });
+        }
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' }).json({
+          id: userDoc._id,
+          username,
+        });
+      });
+    } else {
+      res.status(400).json({ error: 'Wrong credentials' });
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     }
-    res.json(info);
-  });
+  } catch (e) {
+    console.error('Error during login:', e);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.post('/logout', (req, res) => {
+<<<<<<< HEAD
   res.cookie('token', '').json({ message: 'ok' });
+=======
+  res.cookie('token', '', { httpOnly: true, secure: true, sameSite: 'None' }).json({ message: 'ok' });
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
 });
 
 app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
   if (!req.file) {
+<<<<<<< HEAD
+=======
+    console.error('No file uploaded.');
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     return res.status(400).json({ error: 'No file uploaded.' });
   }
 
@@ -128,11 +184,19 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
 
   const { token } = req.cookies;
   if (!token) {
+<<<<<<< HEAD
+=======
+    console.error('Token not provided.');
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     return res.status(401).json({ error: 'Token not provided' });
   }
 
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) {
+<<<<<<< HEAD
+=======
+      console.error('Token is invalid:', err);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       return res.status(401).json({ error: 'Token is invalid' });
     }
 
@@ -147,7 +211,11 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
       });
       res.json(postDoc);
     } catch (e) {
+<<<<<<< HEAD
       console.error(e);
+=======
+      console.error('Error creating post:', e);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       res.status(400).json({ error: e.message });
     }
   });
@@ -164,11 +232,19 @@ app.put('/post/:id', uploadMiddleware.single('file'), async (req, res) => {
 
   const { token } = req.cookies;
   if (!token) {
+<<<<<<< HEAD
+=======
+    console.error('Token not provided.');
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     return res.status(401).json({ error: 'Token not provided' });
   }
 
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) {
+<<<<<<< HEAD
+=======
+      console.error('Token is invalid:', err);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       return res.status(401).json({ error: 'Token is invalid' });
     }
 
@@ -176,6 +252,10 @@ app.put('/post/:id', uploadMiddleware.single('file'), async (req, res) => {
     try {
       const postDoc = await Post.findById(req.params.id);
       if (String(postDoc.author) !== String(info.id)) {
+<<<<<<< HEAD
+=======
+        console.error('User is not the author of the post.');
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
         return res.status(400).json({ error: 'You are not the author' });
       }
       await postDoc.updateOne({
@@ -186,7 +266,11 @@ app.put('/post/:id', uploadMiddleware.single('file'), async (req, res) => {
       });
       res.json(postDoc);
     } catch (e) {
+<<<<<<< HEAD
       console.error(e);
+=======
+      console.error('Error updating post:', e);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       res.status(400).json({ error: e.message });
     }
   });
@@ -195,17 +279,26 @@ app.put('/post/:id', uploadMiddleware.single('file'), async (req, res) => {
 app.delete('/post/:id', async (req, res) => {
   const { token } = req.cookies;
   if (!token) {
+<<<<<<< HEAD
+=======
+    console.error('Token not provided.');
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     return res.status(401).json({ error: 'Token not provided' });
   }
 
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) {
+<<<<<<< HEAD
+=======
+      console.error('Token is invalid:', err);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       return res.status(401).json({ error: 'Token is invalid' });
     }
 
     try {
       const postDoc = await Post.findById(req.params.id);
       if (!postDoc) {
+<<<<<<< HEAD
         return res.status(404).json({ error: 'Post not found' });
       }
       if (String(postDoc.author) !== String(info.id)) {
@@ -215,6 +308,19 @@ app.delete('/post/:id', async (req, res) => {
       res.json({ message: 'Post deleted successfully' });
     } catch (e) {
       console.error(e);
+=======
+        console.error('Post not found.');
+        return res.status(404).json({ error: 'Post not found' });
+      }
+      if (String(postDoc.author) !== String(info.id)) {
+        console.error('User is not the author of the post.');
+        return res.status(400).json({ error: 'You are not the author' });
+      }
+      await postDoc.deleteOne(); // Use deleteOne instead of remove
+      res.json({ message: 'Post deleted successfully' });
+    } catch (e) {
+      console.error('Error deleting post:', e);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       res.status(500).json({ error: 'Failed to delete post' });
     }
   });
@@ -228,7 +334,11 @@ app.get('/post', async (req, res) => {
       .limit(20);
     res.json(posts);
   } catch (e) {
+<<<<<<< HEAD
     console.error(e);
+=======
+    console.error('Error fetching posts:', e);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
     res.status(500).json({ error: 'Failed to fetch posts' });
   }
 });
@@ -238,6 +348,7 @@ app.get('/post/:id', async (req, res) => {
     const postDoc = await Post.findById(req.params.id).populate('author', ['username']);
     res.json(postDoc);
   } catch (e) {
+<<<<<<< HEAD
     console.error(e);
     res.status(404).json({ error: 'Post not found' });
   }
@@ -259,4 +370,32 @@ app.get('/search', async (req, res) => {
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+=======
+    console.error('Error fetching post:', e);
+    res.status(404).json({ error: 'Post not found' });
+  }
 });
+
+app.get('/search', async (req, res) => {
+  const { title } = req.query;
+  try {
+    const posts = await Post.find({ title: { $regex: title, $options: 'i' } })
+      .populate('author', ['username'])
+      .sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (e) {
+    console.error('Error searching posts:', e);
+    res.status(500).json({ error: 'Failed to search posts' });
+  }
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
+});
+
+const PORT = process.env.PORT || 8000;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

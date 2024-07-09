@@ -12,7 +12,11 @@ export default function EditPost() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+<<<<<<< HEAD
     fetch(`http://localhost:4000/post/${id}`)
+=======
+    fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`)
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       .then(response => response.text())
       .then(text => {
         try {
@@ -40,7 +44,11 @@ export default function EditPost() {
     }
 
     try {
+<<<<<<< HEAD
       const response = await fetch(`http://localhost:4000/post/${id}`, {
+=======
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/${id}`, {
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
         method: 'PUT',
         body: data,
         credentials: 'include',

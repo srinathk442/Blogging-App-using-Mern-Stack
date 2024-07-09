@@ -1,10 +1,14 @@
 import { useContext, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+<<<<<<< HEAD
 import '../App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faRefresh } from "@fortawesome/free-solid-svg-icons";
 
+=======
+import '../App.css'; 
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -32,6 +36,7 @@ export default function LoginPage() {
 
   async function login(ev) {
     ev.preventDefault();
+<<<<<<< HEAD
     try {
       const response = await fetch("http://localhost:4000/login", {
         method: "POST",
@@ -41,6 +46,16 @@ export default function LoginPage() {
       });
       if (response.ok) {
         const userInfo = await response.json();
+=======
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
+    if (response.ok) {
+      response.json().then(userInfo => {
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
         setUserInfo(userInfo);
         setRedirect(true);
       } else {

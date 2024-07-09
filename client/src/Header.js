@@ -5,18 +5,10 @@ import { UserContext } from "./UserContext";
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
 
-  useEffect(() => {
-    fetch('http://localhost:4000/profile', {
-      credentials: 'include',
-    }).then(response => {
-      response.json().then(userInfo => {
-        setUserInfo(userInfo);
-      });
-    });
-  }, [setUserInfo]);
+ 
 
   function logout() {
-    fetch('http://localhost:4000/logout', {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
       credentials: 'include',
       method: 'POST',
     });
@@ -29,6 +21,7 @@ export default function Header() {
     <header>
       <Link to="/" className="logo">Lifestyle Blender</Link>
       <nav>
+<<<<<<< HEAD
         <Link to="/">Home</Link> {/* Ensure there is a direct link to Home */}
         <Link to="/search">Search</Link>
         <Link to="#financial">Financial Blogs</Link>
@@ -39,6 +32,13 @@ export default function Header() {
           <>
             <Link to="/create">Create new post</Link>
             <Link to="/" onClick={logout}>Logout</Link>
+=======
+        <Link to="/search">Search</Link> 
+        {username && (
+          <>
+            <Link to="/post">Create new post</Link>
+            <Link to="/logout" onClick={logout}>Logout</Link>
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
           </>
         )}
         {!username && (

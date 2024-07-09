@@ -8,7 +8,11 @@ const SearchPage = () => {
 
   const handleSearch = async () => {
     try {
+<<<<<<< HEAD
       const response = await axios.get(`http://localhost:4000/search?title=${query}`);
+=======
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/search?title=${query}`);
+>>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
       setResults(response.data);
     } catch (error) {
       console.error('Error fetching search results:', error);
