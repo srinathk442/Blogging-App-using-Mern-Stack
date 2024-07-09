@@ -12,24 +12,22 @@ export default function EditPost() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-<<<<<<< HEAD
-    fetch(`http://localhost:4000/post/${id}`)
-=======
-    fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`)
->>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
-      .then(response => response.text())
-      .then(text => {
-        try {
-          const postInfo = JSON.parse(text);
-          setTitle(postInfo.title);
-          setContent(postInfo.content);
-          setSummary(postInfo.summary);
-        } catch (err) {
-          console.error('Failed to parse JSON:', text);
-          setError('Failed to fetch post data');
+    async function fetchPost() {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch post data');
         }
-      })
-      .catch(err => setError(err.message));
+        const postInfo = await response.json();
+        setTitle(postInfo.title);
+        setContent(postInfo.content);
+        setSummary(postInfo.summary);
+      } catch (err) {
+        console.error('Error fetching post:', err);
+        setError('Failed to fetch post data');
+      }
+    }
+    fetchPost();
   }, [id]);
 
   async function updatePost(ev) {
@@ -44,30 +42,20 @@ export default function EditPost() {
     }
 
     try {
-<<<<<<< HEAD
-      const response = await fetch(`http://localhost:4000/post/${id}`, {
-=======
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/${id}`, {
->>>>>>> adb6cd94128f74fb6140ed4fe95e4e12c7ef6573
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`, {
         method: 'PUT',
         body: data,
         credentials: 'include',
       });
 
-      const responseText = await response.text();
-      try {
-        const jsonResponse = JSON.parse(responseText);
-        if (response.ok) {
-          setRedirect(true);
-        } else {
-          setError(jsonResponse.message || 'Failed to update the post');
-        }
-      } catch (err) {
-        console.error('Failed to parse JSON:', responseText);
-        setError('Unexpected server response');
+      if (!response.ok) {
+        throw new Error('Failed to update the post');
       }
+
+      setRedirect(true);
     } catch (err) {
-      setError(err.message);
+      console.error('Error updating post:', err);
+      setError('Failed to update the post');
     }
   }
 
