@@ -25,12 +25,12 @@ export default function Post({ _id, title, description, cover, content, createdA
         <Link to={`/post/${_id}`}>
           <h2>{title}</h2>
         </Link>
-        <p className="info">
+        <div className="info">
           <Link to={`/author/${author._id}`} className="author">{author.username}</Link>&nbsp;
           <time>{format(new Date(createdAt), "PPP")}</time>
-          <b><p className="word-count">Word Count: {wordCount(content)}</p></b>
-          <b><p className="reading-time">{calculateReadingTime(content)}</p></b>
-        </p>
+          <b><span className="word-count">Word Count: {wordCount(content)}</span></b>
+          <b><span className="reading-time">{calculateReadingTime(content)}</span></b>
+        </div>
         <p className="summary">{description}</p>
       </div>
     </div>
