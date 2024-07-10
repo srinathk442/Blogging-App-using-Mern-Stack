@@ -22,7 +22,7 @@ export default function Header() {
       method: 'POST',
     }).then(() => {
       setUserInfo(null);
-      navigate('/'); // Redirect to home page after logout
+      navigate('/');
     });
   }
 
@@ -32,7 +32,6 @@ export default function Header() {
     <header>
       <Link to="/" className="logo">Lifestyle Blender</Link>
       <nav>
-        {!username && <Link to="/">Home</Link>}
         {username && (
           <>
             <Link to="/search">Search</Link>
