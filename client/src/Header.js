@@ -34,6 +34,8 @@ export default function Header() {
       <nav>
         {username && (
           <>
+           <Link to='/'>Home</Link>
+           <Link to="/index">View Posts</Link>
             <Link to="/search">Search</Link>
             <Link to="/create">Create new post</Link>
             <Link to="/logout" onClick={logout}>Logout</Link>
@@ -41,6 +43,7 @@ export default function Header() {
         )}
         {!username && (
           <>
+            <Link to="/index">View Posts</Link>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
           </>

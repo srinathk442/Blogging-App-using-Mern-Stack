@@ -34,7 +34,7 @@ export default function PostPage() {
       });
 
       if (response.ok) {
-        navigate("/");
+        navigate("/index");
       } else {
         const jsonResponse = await response.json();
         setError(jsonResponse.message || 'Failed to delete the post');
