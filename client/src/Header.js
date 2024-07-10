@@ -36,10 +36,6 @@ export default function Header() {
         {username && (
           <>
             <Link to="/search">Search</Link>
-            <Link to="#financial">Financial Blogs</Link>
-            <Link to="#sports">Sports Blogs</Link>
-            <Link to="#business">Business Blogs</Link>
-            <Link to="#education">Education Blogs</Link>
             <Link to="/create">Create new post</Link>
             <Link to="/logout" onClick={logout}>Logout</Link>
           </>

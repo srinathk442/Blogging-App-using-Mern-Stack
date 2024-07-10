@@ -10,10 +10,6 @@ import PostPage from './Pages/PostPage';
 import EditPost from './Pages/EditPost';
 import SearchPage from './Pages/SearchPage';
 import Home from './Pages/Home';
-import FinancialBlogs from './Pages/FinancialBlogs';
-import SportsBlogs from './Pages/SportsBlogs';
-import BusinessBlogs from './Pages/BusinessBlogs';
-import EducationBlogs from './Pages/EducationBlogs';
 
 function App() {
   return (
@@ -29,10 +25,6 @@ function App() {
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/edit/:id" element={<EditPost />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/financial" element={<FinancialBlogs />} />
-          <Route path="/sports" element={<SportsBlogs />} />
-          <Route path="/business" element={<BusinessBlogs />} />
-          <Route path="/education" element={<EducationBlogs />} />
         </Route>
       </Routes>
     </UserContextProvider>
