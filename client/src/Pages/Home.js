@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+import { UserContext } from '../UserContext';
+
 const Home = () => {
+  const { userInfo } = useContext(UserContext);
+  const username = userInfo?.username;
+
   return (
     <div className="home-container">
       <header className="home-header">
         <h1>Welcome to Lifestyle Blender!</h1>
         <nav>
-          <Link to="/register" className="nav-link">Register</Link>
-          <Link to="/login" className="nav-link">Login</Link>
+          {!username && <Link to="/" className="nav-link">Home</Link>}
         </nav>
       </header>
       <main>
