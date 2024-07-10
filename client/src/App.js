@@ -9,7 +9,6 @@ import CreatePost from './Pages/CreatePost';
 import PostPage from './Pages/PostPage';
 import EditPost from './Pages/EditPost';
 import SearchPage from './Pages/SearchPage';
-import Home from './Pages/Home';
 import FinancialBlogs from './Pages/FinancialBlogs';
 import SportsBlogs from './Pages/SportsBlogs';
 import BusinessBlogs from './Pages/BusinessBlogs';
@@ -20,8 +19,8 @@ function App() {
     <UserContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/index" element={<IndexPage />} />
+        <Route index element={<IndexPage />} />
+        <Route path="/index" element={<IndexPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/create" element={<CreatePost />} />
