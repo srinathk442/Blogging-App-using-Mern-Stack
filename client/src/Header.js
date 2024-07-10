@@ -7,7 +7,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:4000/profile', {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
       credentials: 'include',
     }).then(response => {
       response.json().then(userInfo => {
@@ -17,7 +17,7 @@ export default function Header() {
   }, [setUserInfo]);
 
   function logout() {
-    fetch('http://localhost:4000/logout', {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
       credentials: 'include',
       method: 'POST',
     }).then(() => {

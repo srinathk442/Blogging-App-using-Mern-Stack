@@ -12,7 +12,7 @@ export default function PostPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/post/${id}`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`)
       .then(response => response.json())
       .then(postInfo => {
         setPostInfo(postInfo);
@@ -28,7 +28,7 @@ export default function PostPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/post/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -66,7 +66,7 @@ export default function PostPage() {
       )}
       <br></br>
       <div className="image">
-        <img src={`http://localhost:4000/${postInfo.cover}`} alt=""/>
+        <img src={`${process.env.REACT_APP_SERVER_URL}/${postInfo.cover}`} alt=""/>
       </div>
       <div className="content" dangerouslySetInnerHTML={{ __html: postInfo.content }} />
       {isAuthor && (

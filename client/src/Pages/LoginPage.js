@@ -22,7 +22,7 @@ export default function LoginPage() {
 
   async function fetchCaptcha() {
     try {
-      const response = await fetch("http://localhost:4000/generate-captcha");
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/generate-captcha`);
       if (!response.ok) {
         throw new Error("Failed to fetch CAPTCHA");
       }
@@ -39,7 +39,7 @@ export default function LoginPage() {
   async function login(ev) {
     ev.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/login", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
         method: "POST",
         body: JSON.stringify({ username, password, captchaId, captchaValue }),
         headers: { "Content-Type": "application/json" },
