@@ -22,8 +22,7 @@ export default function Editor({ value, onChange }) {
 
   useEffect(() => {
     if (quillRef.current) {
-      // You can use the editor instance here if needed
-      quillRef.current.getEditor();
+            quillRef.current.getEditor();
     }
   }, []);
 

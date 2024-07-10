@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'; // Include the CSS file for styling
-
+import './Home.css';
 const Home = () => {
   return (
     <div className="home-container">
       <header className="home-header">
         <h1>Welcome to Lifestyle Blender!</h1>
         <nav>
-          <Link to="/signup" className="nav-link">Register</Link>
+          <Link to="/register" className="nav-link">Register</Link>
           <Link to="/login" className="nav-link">Login</Link>
         </nav>
       </header>

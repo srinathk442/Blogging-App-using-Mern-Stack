@@ -12,22 +12,20 @@ export default function EditPost() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchPost() {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch post data');
+    fetch(`http://localhost:4000/post/${id}`)
+      .then(response => response.text())
+      .then(text => {
+        try {
+          const postInfo = JSON.parse(text);
+          setTitle(postInfo.title);
+          setContent(postInfo.content);
+          setSummary(postInfo.summary);
+        } catch (err) {
+          console.error('Failed to parse JSON:', text);
+          setError('Failed to fetch post data');
         }
-        const postInfo = await response.json();
-        setTitle(postInfo.title);
-        setContent(postInfo.content);
-        setSummary(postInfo.summary);
-      } catch (err) {
-        console.error('Error fetching post:', err);
-        setError('Failed to fetch post data');
-      }
-    }
-    fetchPost();
+      })
+      .catch(err => setError(err.message));
   }, [id]);
 
   async function updatePost(ev) {
@@ -42,20 +40,26 @@ export default function EditPost() {
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/post/${id}`, {
+      const response = await fetch(`http://localhost:4000/post/${id}`, {
         method: 'PUT',
         body: data,
         credentials: 'include',
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update the post');
+      const responseText = await response.text();
+      try {
+        const jsonResponse = JSON.parse(responseText);
+        if (response.ok) {
+          setRedirect(true);
+        } else {
+          setError(jsonResponse.message || 'Failed to update the post');
+        }
+      } catch (err) {
+        console.error('Failed to parse JSON:', responseText);
+        setError('Unexpected server response');
       }
-
-      setRedirect(true);
     } catch (err) {
-      console.error('Error updating post:', err);
-      setError('Failed to update the post');
+      setError(err.message);
     }
   }
 
