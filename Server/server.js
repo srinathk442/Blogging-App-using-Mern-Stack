@@ -101,19 +101,8 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/profile', (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json({ error: 'Token not provided' });
-  }
 
-  jwt.verify(token, secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: 'Token is invalid' });
-    }
-    res.json(decoded);
-  });
-});
+
 
 
 app.post('/logout', (req, res) => {
