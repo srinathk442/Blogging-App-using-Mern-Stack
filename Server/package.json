@@ -1,8 +1,8 @@
 {
-  "name": "mern-blog",
+  "name": "mern-blog-capstone",
   "version": "1.0.0",
-  "description": "This is a blog app",
-  "server": "server.js",
+  "description": "This is a mern blog",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
@@ -12,6 +12,8 @@
   "author": "Srinath",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.1658.0",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -22,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.5",
     "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
     "react-google-recaptcha": "^3.1.0",
     "svg-captcha": "^1.4.0"
   },
