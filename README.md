@@ -7,3 +7,4 @@ Edit the .env file in the client and change the REACT_APP_SERVER_URL = http://lo
 To run the server edit the environment variables and change the secret key and mongodburl if you want to run from your database
 
 For vercel configuration change the environment variables accordingly
+ Enter your mongodb and secret key in the .env file of the server
